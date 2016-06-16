@@ -1,4 +1,4 @@
-bimodtest <- function(y) {
+bimodtest <- function(y, debug = FALSE) {
   # test if a histogram is bimodal
   
   # in: 
@@ -10,20 +10,22 @@ bimodtest <- function(y) {
   # this script is ported from the original matlab code by Antti Niemistro
   # GNU General Public License
   
-  debug = FALSE
   
-  len <- length(y$counts)
-  b <- false
+  y <- y$counts
+  len <- length(y)
+  if (debug) {print(len)}
+  b <- FALSE
   modes = 0
   
   # count the number of modes of the histogram in a loop.
   # If the number exceeds 2, return with boolean value false.
   
-  for (k in 2:len - 1) {
-    if (y[k - 1] < y[k] & y[k + 1] < y(k)) {
+  for (k in 2:(len - 1)) {
+    if (debug) {print(k)} # debug statement
+    if (y[k - 1] < y[k] & y[k + 1] < y[k]) {
       modes = modes + 1
       if (modes > 2) {
-        return()
+        return(TRUE)
       }
     }
   }
