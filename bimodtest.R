@@ -10,7 +10,9 @@ bimodtest <- function(y) {
   # this script is ported from the original matlab code by Antti Niemistro
   # GNU General Public License
   
-  len <- length(y)
+  debug = FALSE
+  
+  len <- length(y$counts)
   b <- false
   modes = 0
   
