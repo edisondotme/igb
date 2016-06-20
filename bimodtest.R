@@ -33,13 +33,15 @@ bimodtest <- function(y, debug = FALSE) {
   if (modes == 2) {
     b = TRUE
   }
+  return(FALSE)
 }
 # consider using the r package diptest instead of porting this yourself.
 # that package might be better
 
 init <- function() {
   library(imager)
-  I <- load.image(file = "C:\\Users\\me\\Downloads\\hemiphoto.JPG")
+  file_path = "C:\\Users\\me\\Documents\\igb\\cameraman.png"
+  I <- load.image(file = file_path)
   I <- B(I)
   I <- as.vector(I)
   I <- I*255
