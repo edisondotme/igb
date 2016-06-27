@@ -2,7 +2,7 @@ bimodtest <- function(y, debug = FALSE) {
   # test if a histogram is bimodal
   
   # in: 
-  # y histogram
+  # y histogram counts
   
   # out
   # true if histogram is bimodal, otherwise false
@@ -11,36 +11,36 @@ bimodtest <- function(y, debug = FALSE) {
   # GNU General Public License
   
   
-  y <- y$counts
+  # y <- y$counts
   len <- length(y)
   if (debug) {print(len)}
   b <- FALSE
-  modes = 0
+  modes <- 0
   
   # count the number of modes of the histogram in a loop.
   # If the number exceeds 2, return with boolean value false.
   
   for (k in 2:(len - 1)) {
-    if (debug) {print(k)} # debug statement
+    if (debug) {print(c(k, modes))}
     if (y[k - 1] < y[k] & y[k + 1] < y[k]) {
-      modes = modes + 1
+      modes <- modes + 1
       if (modes > 2) {
-        return(TRUE)
+        break
       }
     }
   }
-  
+ if (debug) {print(modes)} 
   if (modes == 2) {
-    b = TRUE
+    b <- TRUE
   }
-  return(FALSE)
+  return(b)
 }
 # consider using the r package diptest instead of porting this yourself.
 # that package might be better
 
 init <- function() {
   library(imager)
-  file_path = "C:\\Users\\me\\Documents\\igb\\cameraman.png"
+  file_path <- "C:\\Users\\me\\Documents\\igb\\cameraman.png"
   I <- load.image(file = file_path)
   I <- B(I)
   I <- as.vector(I)
