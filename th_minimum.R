@@ -22,7 +22,6 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
                             breaks = 0:n,
                             plot = debug)
     image_histogram <- image_histogram$counts
-    # difference here ^^^
     if (debug) {print(head(image_histogram, 20))}
 
     iter <- 0
@@ -32,7 +31,6 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
     while (!bimodtest(image_histogram)) {
         # if (debug) {readline(iter)}
 
-        h <- rep(1/3, 3)
         # image_histogram <- stats::convolve(x = image_histogram, y = h, type = "open")
         image_histogram <- convolution(u = image_histogram, same = TRUE)
         iter <- iter + 1

@@ -27,5 +27,6 @@ convolution <- function(u, v = rep(1/3, 3), same = FALSE, debug = F) {
   } else {
     # conditions for same == FALSe
     return(w)
+    # this algorithm incorrectly adds an element every time it is run for some reason. Fix that
   }
 }
