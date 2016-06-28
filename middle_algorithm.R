@@ -9,6 +9,7 @@ conv <- function(u, v = rep(1/3, 3), type = 'open', debug = F) {
 
     # library(stats)
     # find convolution
+    # length(u)+length(v)-1
     convolution <- round(stats::convolve(x = u, y = v, type = type), digits = 1)
     l <- length(conv)
     if(debug) {print(l)}

@@ -11,7 +11,7 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
     library(stats)
     library(imager)
     source('./bimodtest.R')
-    source('./middle_algorithm.R')
+    source('./convolution.R')
 
     if (debug) {print('debug mode enabled')}
 
@@ -20,8 +20,7 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
     image <- B(image) # only blue band
     image_histogram <- hist(x = image*255,
                             breaks = 0:n,
-                            col = 'blue',
-                            main = 'Histogram')
+                            plot = debug)
     image_histogram <- image_histogram$counts
     # difference here ^^^
     if (debug) {print(head(image_histogram, 20))}
@@ -30,13 +29,17 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
     if (debug) {readline('starting iterations')}
     if (debug) {readline(bimodtest(image_histogram))}
 
-    while (bimodtest(image_histogram)) {
+    while (!bimodtest(image_histogram)) {
         # if (debug) {readline(iter)}
 
         h <- rep(1/3, 3)
         # image_histogram <- stats::convolve(x = image_histogram, y = h, type = "open")
-        image_histogram <- conv(u = image_histogram)
+        image_histogram <- convolution(u = image_histogram, same = TRUE)
         iter <- iter + 1
+        if (debug) {
+          plot(image_histogram, type = 'l', col = 'red')
+          readline('pause to look at graph')
+        }
         # If the histogram turns out not to be bimodal, set T to zero
         if (iter > 10000) {
             T <- 0
@@ -45,22 +48,19 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
         }
     }
     if (debug) {print(iter)}
+    # return(image_histogram)
 
     #
     peakfound <- FALSE
     
     for (k in 2:n) {
-        if (debug) {readline(k)}
-
-        if ( image_histogram[k-1] < image_histogram[k] & image_histogram[k + 1] < image_histogram[k]) {
-            # peak found
-            peakfound <- TRUE
-            if (debug) {readline('peakfound')}
-        }
-        if (peakfound & image_histogram[k-1] >= image_histogram[k+1] & image_histogram[k+1] >= image_histogram[k] ) {
-            T <- k-1
-            return(T)
-        }
+      if ( image_histogram[k-1] < image_histogram[k] & image_histogram[k + 1] < image_histogram[k]) {
+          peakfound <- TRUE
+          }
+      if (peakfound & image_histogram[k-1] >= image_histogram[k+1] & image_histogram[k+1] >= image_histogram[k] ) {
+        T <- k-1
+        return(T)
+      }
     }
 }
 

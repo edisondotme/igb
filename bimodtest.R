@@ -33,6 +33,10 @@ bimodtest <- function(y, debug = FALSE) {
   if (modes == 2) {
     b <- TRUE
   }
+  if (modes > 2) {
+    if (debug) {print('number of modes is greater than 2')}
+    # b <- TRUE
+  }
   return(b)
 }
 # consider using the r package diptest instead of porting this yourself.
