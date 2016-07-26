@@ -61,4 +61,3 @@ threshold <- function(I = "C:\\Users\\me\\Documents\\igb\\cameraman.png", n = 25
       }
     }
 }
-

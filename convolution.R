@@ -6,10 +6,11 @@ convolution <- function(u, v = rep(1/3, 3), same = FALSE, debug = F) {
   if (debug) {print(wLength)}
   w <- c()
   
+  # find the convolution
   for (k in 1:wLength) {
     j <- seq(from = max(1, k + 1 - n), by = 1, to = min(k, m))
     w[k] <- sum(u[j] * v[k - j + 1])
-    if (debug) {print(j); print(w[k])}
+    if (debug) {print(j); print('---'); print(w[k])}
   }
   
   # Get central part of w same length as u
@@ -17,16 +18,18 @@ convolution <- function(u, v = rep(1/3, 3), same = FALSE, debug = F) {
   
   if (m %% 2 == wLength %% 2 && same ) {
     # conditions for perfect center
-    selection <- w[((wLength - m)/2):((wLength - m)/2 + m)]
+    if (debug) {print('perfect center')}
+    selection <- w[(((wLength - m) / 2) + 1):((wLength - m) / 2 + (m))]
     return(selection)
   } else if (m %% 2 != wLength %% 2 && same) {
     # conditions for off center
-    m <- m - 1
-    selection <- w[(((wLength - m)/2) + 1):((wLength - m)/2 + (m + 1))]
-    return(selection)
+    if (debug) {print('off center')}
+    w <- w[wLength + 1] <- NA
+    selection <- w[(((wLength - m)/2) + 1):((wLength - m) / 2 + m)]
+    return(selection[1:wLength])
   } else {
-    # conditions for same == FALSe
+    # conditions for same == FALSE
+    if (debug) {print('should only run if same == F')}
     return(w)
-    # this algorithm incorrectly adds an element every time it is run for some reason. Fix that
   }
 }
