@@ -18,8 +18,8 @@ threshold <-
     library(stats)
     library(imager)
     # these assume the r script is run in the correct directory
-    source('./bimodtest.R')
-    source('./convolution.R')
+    # source('./bimodtest.R')
+    # source('./convolution.R')
     
     if (is.na(I)) {
       stop("Error: No image path given.")
