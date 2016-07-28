@@ -9,7 +9,7 @@ bimodtest <- function(y, debug = FALSE) {
   
   # this script is ported from the original matlab code by Antti Niemistro
   # GNU General Public License
-  
+  # ------------------------------------------------------ #
   
   len <- length(y)
   b <- FALSE
@@ -18,10 +18,8 @@ bimodtest <- function(y, debug = FALSE) {
   # count the number of modes of the histogram in a loop.
   # If the number exceeds 2, return with boolean value false.
   
+  # turn the following into an apply statement for speed
   for (k in 2:(len - 1)) {
-    if (debug) {
-      print(c(k, modes))
-    }
     if (y[k - 1] < y[k] & y[k + 1] < y[k]) {
       modes <- modes + 1
       if (modes > 2) {
@@ -29,16 +27,10 @@ bimodtest <- function(y, debug = FALSE) {
       }
     }
   }
-  if (debug) {
-    print(modes)
-  }
   if (modes == 2) {
     b <- TRUE
   }
   if (modes > 2) {
-    if (debug) {
-      print('number of modes is greater than 2')
-    }
   }
   return(b)
 }

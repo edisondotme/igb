@@ -31,20 +31,23 @@ threshold <-
     image_histogram <- hist(x = image * n,
                             breaks = 0:n,
                             plot = debug)
-    
     image_histogram <- image_histogram$counts
     
     iter <- 0
     
+    # while histogram is not bimodal,
+    # convolve it until it is
     while (!bimodtest(image_histogram)) {
       image_histogram <-
         convolution(u = image_histogram, same = TRUE)
       iter <- iter + 1
+      
+      # delete this debug statement after showing to Andrew maybe?
       if (debug) {
         plot(image_histogram, type = 'l', col = 'red')
         readline('pause to look at graph')
       }
-      # If the histogram turns out not to be bimodal, set T to zero
+      # If the histogram turns out not to be bimodal, set T to zero and return
       if (iter > 10000) {
         T <- 0
         return(T)
@@ -53,6 +56,7 @@ threshold <-
     
     peakfound <- FALSE
     
+    # if the peak is found, return the threshold value
     for (k in 2:n) {
       if (image_histogram[k - 1] < image_histogram[k] &
           image_histogram[k + 1] < image_histogram[k]) {
