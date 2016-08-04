@@ -21,17 +21,26 @@ threshold <-
     # source('./bimodtest.R')
     # source('./convolution.R')
     
-    if (is.na(I)) {
-      stop("Error: No image path given.")
+    # this area needs to be fixed
+    if (class(I)[1] == 'cimg') {
+      # image <- B(I) # only blue band for reasons
+      readline('check')
+      image <- I
+      image_histogram <- hist(x = image * n,
+                              breaks = 0:n,
+                              plot = debug)
+      image_histogram <- image_histogram$counts
+    } else {
+      # Load and preprocess image and make histogram
+      image <- load.image(file = I)
+      image <- B(image) # only blue band for reasons
+      image_histogram <- hist(x = image * n,
+                              breaks = 0:n,
+                              plot = debug)
+      image_histogram <- image_histogram$counts
     }
     
-    # Load images
-    image <- load.image(file = I)
-    image <- B(image) # only blue band for reasons
-    image_histogram <- hist(x = image * n,
-                            breaks = 0:n,
-                            plot = debug)
-    image_histogram <- image_histogram$counts
+    
     
     iter <- 0
     
@@ -53,17 +62,20 @@ threshold <-
         return(T)
       }
     }
+    readline('does it get here?')
     
     peakfound <- FALSE
     
     # if the peak is found, return the threshold value
     for (k in 2:n) {
+      # readline(cat(k, image_histogram[k]))
       if (image_histogram[k - 1] < image_histogram[k] &
           image_histogram[k + 1] < image_histogram[k]) {
         peakfound <- TRUE
+        readline('we found a peak')
       }
       if (peakfound &
-          image_histogram[k - 1] >= image_histogram[k + 1] &
+          image_histogram[k - 1] >= image_histogram[k + 1] & # problem is here because it tries to access the 256th element of image_histogram which dosen't exist
           image_histogram[k + 1] >= image_histogram[k]) {
         T <- k - 1
         return(T)
