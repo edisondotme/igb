@@ -1,6 +1,5 @@
 run <- function() {
   # main.R
-  
   setwd("igb/lai-r-proj/")
   
   source("./R/th_minimum.R")
@@ -51,9 +50,14 @@ crop <- function(file = "data/test_photos/004_1_Oct3_2015_GOPRO002.JPG") {
   
   # assign all the values outside the circle to placeholder value
   im$value[sqrt((im$x - center[1])^2 + (im$y - center[2])^2) > r] = NA # note: need to be -1 for plotting a cimg object
+  im <- as.vector(im$value)
+  im <- im[!is.na(im)] # remove NA values from im vector
+  # im <- im[!is.na(im$value),] # remove NA values
   # im <- imager::as.cimg(obj = im, dims = c(nr, nc, 1, 1))
   # image(1:nr, 1:nc, matrix(im$value, nrow=nr, byrow=FALSE), col=gray((0:32)/32) ) # plotting
-  return(imager::as.cimg(im))
+  message('length of im is ', length(im))
+  # return(imager::as.cimg(im, 2965, 2418))
+  return(im)
 }
 
 cropcam <- function() {
